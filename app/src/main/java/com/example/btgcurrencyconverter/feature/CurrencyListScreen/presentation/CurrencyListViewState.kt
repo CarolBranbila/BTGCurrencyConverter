@@ -5,5 +5,6 @@ data class CurrencyListViewState(
 )
 
 data class Currency(
-    val name : String
+    val name : String,
+    val isSelected:Boolean
 )
