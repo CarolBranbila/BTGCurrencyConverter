@@ -17,15 +17,19 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.btgcurrencyconverter.feature.CurrencyListScreen.presentation.Currency
+import com.example.btgcurrencyconverter.feature.CurrencyListScreen.presentation.CurrencyListViewModel
 import com.example.btgcurrencyconverter.feature.CurrencyListScreen.presentation.CurrencyListViewState
 import com.example.btgcurrencyconverter.ui.theme.BTGCurrencyConverterTheme
 
 @Composable
 fun CurrencyListScreen(
     modifier: Modifier = Modifier,
+    viewModel: CurrencyListViewModel,
     list: List<Currency>,
     onClick: (Currency) -> Unit
 ) {
+    val viewState by viewModel.viewState.collectAsState()
+
     LazyColumn(
         modifier = modifier
             .padding(16.dp)
