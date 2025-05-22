@@ -3,6 +3,7 @@ package com.example.btgcurrencyconverter.feature.CurrencyListScreen.ui
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -42,6 +43,9 @@ fun CurrencyListScreen(
                 name = it.name,
                 isSelected = it.isSelected,
                 onClick = { onClick (it)},
+            )
+            Spacer(modifier = Modifier
+                .padding(6.dp)
             )
         }
     }
