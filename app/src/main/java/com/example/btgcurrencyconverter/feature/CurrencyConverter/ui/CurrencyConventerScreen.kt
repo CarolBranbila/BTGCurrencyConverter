@@ -10,9 +10,11 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -43,6 +45,7 @@ import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.LineHeightStyle
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.btgcurrencyconverter.CurrencyConventer
@@ -53,7 +56,9 @@ import com.example.btgcurrencyconverter.ui.theme.BTGCurrencyConverterTheme
 @Composable
 fun CurrencyConventerScreen(
     modifier: Modifier,
+    result : Double,
 ) {
+
     Scaffold(
         topBar = {
             TopAppBar(
@@ -108,8 +113,8 @@ fun CurrencyConventerScreen(
                     .padding(8.dp),
 
                 textStyle = TextStyle(MaterialTheme.colorScheme.secondary),
-                onValueChange = { newText ->
-                    value = newText
+                onValueChange = { newValue ->
+                    value = newValue
                 }
             )
             Text(
@@ -117,27 +122,31 @@ fun CurrencyConventerScreen(
                 style = MaterialTheme.typography.labelMedium,
                 fontWeight = FontWeight.Medium
             )
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
+            Row(
+                modifier
                     .border(
                         width = 1.dp,
                         shape = MaterialTheme.shapes.medium,
                         color = MaterialTheme.colorScheme.secondaryContainer,
-                    )
+                    ),
+                verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = "Resultado",
-                    fontWeight = FontWeight.Bold,
-                    )
+                    modifier = Modifier
+                        .weight(1f)
+                        .padding(16.dp),
+                    text = result.toString(),
+                    style = MaterialTheme.typography.titleLarge,
+                    textAlign = TextAlign.Center,
+                )
             }
-
 
         }
 
     }
 
 }
+
 
 @Composable
 fun CurrencySelect(
@@ -181,7 +190,8 @@ fun CurrencySelect(
 private fun CurrencyConventerScreenPreview() {
     BTGCurrencyConverterTheme {
         CurrencyConventerScreen(
-            modifier = Modifier
+            modifier = Modifier,
+            result = 20.0,
         )
     }
 }
