@@ -1,5 +1,6 @@
 package com.example.btgcurrencyconverter.feature.CurrencyConverter.ui
 
+import android.R.attr.content
 import android.text.Layout
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
@@ -8,6 +9,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -56,7 +58,7 @@ import com.example.btgcurrencyconverter.ui.theme.BTGCurrencyConverterTheme
 @Composable
 fun CurrencyConventerScreen(
     modifier: Modifier,
-    result : Double,
+    result: Double,
 ) {
 
     Scaffold(
@@ -65,15 +67,15 @@ fun CurrencyConventerScreen(
                 title = { Text("Conversor de Moedas") },
                 colors = TopAppBarDefaults.topAppBarColors(
                     MaterialTheme.colorScheme.primary,
-                    titleContentColor = MaterialTheme.colorScheme.onPrimary
-                )
+                    titleContentColor = MaterialTheme.colorScheme.onPrimary,
+                ),
             )
         }
-    ) { paddingValues ->
+    ) {innerPadding ->
 
         Column(
             modifier = Modifier
-                .padding(paddingValues)
+                .padding(innerPadding)
                 .padding(16.dp)
                 .fillMaxSize(),
             verticalArrangement = Arrangement.spacedBy(16.dp)
@@ -110,8 +112,12 @@ fun CurrencyConventerScreen(
                 value = value,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(8.dp),
-
+                    .padding(8.dp)
+                    .border(
+                        width = 1.dp,
+                        shape = MaterialTheme.shapes.medium,
+                        color = MaterialTheme.colorScheme.secondaryContainer,
+                    ),
                 textStyle = TextStyle(MaterialTheme.colorScheme.secondary),
                 onValueChange = { newValue ->
                     value = newValue
