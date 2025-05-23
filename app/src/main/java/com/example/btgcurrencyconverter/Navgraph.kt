@@ -2,25 +2,64 @@ package com.example.btgcurrencyconverter
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Modifier
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.createGraph
+import com.example.btgcurrencyconverter.feature.CurrencyConverter.presentation.CurrencyConverterViewModel
+import com.example.btgcurrencyconverter.feature.CurrencyConverter.ui.CurrencyConventerScreen
+import com.example.btgcurrencyconverter.feature.CurrencyListScreen.presentation.CurrencyListViewModel
+import com.example.btgcurrencyconverter.feature.CurrencyListScreen.ui.CurrencyListScreen
 import kotlinx.serialization.Serializable
 
 @Serializable
-data object CurrencyConventer
+data object CurrencyConverter
+
+@Serializable
+data object CurrencyList
 
 @Composable
-fun MainNavGraph(){
+fun MainNavGraph() {
     val navController = rememberNavController()
 
-    val navGraph = remember(navController){
-        navController.createGraph (
-            startDestination = CurrencyConventer
+    val navGraph = remember(navController) {
+        navController.createGraph(
+            startDestination = CurrencyConverter
         ) {
-            composable<CurrencyConventer>{
-               // val viewModel = viewModel<CurrencyConventerViewModel>
+            composable<CurrencyConverter> {
+                val viewModel = viewModel<CurrencyConverterViewModel>()
+                CurrencyConventerScreen(
+                    modifier = Modifier,
+                    viewModel = viewModel,
+                    onClick = {
+                        navController.navigate(
+                            CurrencyList
+                        )
+                    }
+                )
             }
+            composable<CurrencyList> {
+                val viewModel = viewModel<CurrencyListViewModel>()
+                CurrencyListScreen(
+                    modifier = Modifier,
+                    viewModel = viewModel,
+                    list = emptyList(),
+                    onClick = {
+                        navController.navigate(
+                            CurrencyConverter,
+                        )
+                    }
+                )
+            }
+
+
         }
     }
+    NavHost(
+        navController = navController,
+        graph = navGraph,
+    )
+
 }

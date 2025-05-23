@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">BTGCurrencyConverter</string>
+    <string name="currency_to_convert_value">"Valor: "</string>
+    <string name="currency_result">"Resultado: "</string>
 </resources>

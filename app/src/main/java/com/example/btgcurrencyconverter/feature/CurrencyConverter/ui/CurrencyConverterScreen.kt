@@ -14,6 +14,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
@@ -25,19 +26,25 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.example.btgcurrencyconverter.R
+import com.example.btgcurrencyconverter.feature.CurrencyConverter.presentation.CurrencyConverterViewModel
 import com.example.btgcurrencyconverter.ui.theme.BTGCurrencyConverterTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CurrencyConventerScreen(
     modifier: Modifier,
-    result: Double,
+    viewModel: CurrencyConverterViewModel,
+    onClick: () -> Unit,
 ) {
+    val viewState by viewModel.viewState.collectAsStateWithLifecycle()
 
     Scaffold(
         topBar = {
@@ -49,7 +56,7 @@ fun CurrencyConventerScreen(
                 ),
             )
         }
-    ) {innerPadding ->
+    ) { innerPadding ->
 
         Column(
             modifier = Modifier
@@ -79,30 +86,27 @@ fun CurrencyConventerScreen(
                 onClick = {},
             )
             Text(
-                text = "Valor: ",
+                text = stringResource(R.string.currency_to_convert_value),
                 style = MaterialTheme.typography.labelMedium,
                 fontWeight = FontWeight.Medium
             )
-            var value by remember {
-                mutableStateOf(value = "")
-            }
+            var value by remember { mutableStateOf(value = "") }
             OutlinedTextField(
                 value = value,
+                shape = MaterialTheme.shapes.medium,
+                colors = OutlinedTextFieldDefaults.colors(
+                    unfocusedBorderColor = MaterialTheme.colorScheme.secondaryContainer,
+                ),
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(8.dp)
-                    .border(
-                        width = 1.dp,
-                        shape = MaterialTheme.shapes.medium,
-                        color = MaterialTheme.colorScheme.secondaryContainer,
-                    ),
+                    .padding(8.dp),
                 textStyle = TextStyle(MaterialTheme.colorScheme.secondary),
                 onValueChange = { newValue ->
                     value = newValue
                 }
             )
             Text(
-                text = "Resultado: ",
+                text = stringResource(R.string.currency_result),
                 style = MaterialTheme.typography.labelMedium,
                 fontWeight = FontWeight.Medium
             )
@@ -119,16 +123,13 @@ fun CurrencyConventerScreen(
                     modifier = Modifier
                         .weight(1f)
                         .padding(16.dp),
-                    text = result.toString(),
+                    text = viewState.result,
                     style = MaterialTheme.typography.titleLarge,
                     textAlign = TextAlign.Center,
                 )
             }
-
         }
-
     }
-
 }
 
 
@@ -175,7 +176,8 @@ private fun CurrencyConventerScreenPreview() {
     BTGCurrencyConverterTheme {
         CurrencyConventerScreen(
             modifier = Modifier,
-            result = 20.0,
+            viewModel = CurrencyConverterViewModel(),
+            onClick = {},
         )
     }
 }
