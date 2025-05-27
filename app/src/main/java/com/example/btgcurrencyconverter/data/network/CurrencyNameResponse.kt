@@ -155,7 +155,7 @@ data class Currencies(
     @SerialName("TMT") val tmt: String,
     @SerialName("TND") val tnd: String,
     @SerialName("TOP") val top: String,
-    @SerialName("TRY") val tryValue: String, // 'try' is a reserved keyword in Kotlin
+    @SerialName("TRY") val tryValue: String,
     @SerialName("TTD") val ttd: String,
     @SerialName("TWD") val twd: String,
     @SerialName("TZS") val tzs: String,
