@@ -5,8 +5,8 @@ import retrofit2.http.Query
 
 interface BTGApi {
     @GET("Banking-iOS/mock-interview/main/api/list.json")
-    suspend fun getCurrencyNameList() : Currencies
+    suspend fun getCurrencyNameList() : CurrencyResponse
 
     @GET("Banking-iOS/mock-interview/main/api/live.json")
-    suspend fun getQuotesList(): CurrencyQuotes
+    suspend fun getQuotesList(): CurrencyListResponse
 }

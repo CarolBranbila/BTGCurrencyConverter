@@ -8,5 +8,6 @@ fun createRoomDatabaseInstance(
 ) =
     Room.databaseBuilder(
         applicationContext,
-        AppDataBase::class.java, "database-name"
+        AppDataBase::class.java,
+        "btg.db",
     ).build()
