@@ -57,78 +57,87 @@ fun CurrencyConventerScreen(
             )
         }
     ) { innerPadding ->
-
-        Column(
-            modifier = Modifier
-                .padding(innerPadding)
-                .padding(16.dp)
-                .fillMaxSize(),
-            verticalArrangement = Arrangement.spacedBy(16.dp)
+        ContentCurrencyConverterScreen(
+            modifier = Modifier.padding(innerPadding)
+        ) { }
+        Row(
+            modifier
+                .border(
+                    width = 1.dp,
+                    shape = MaterialTheme.shapes.medium,
+                    color = MaterialTheme.colorScheme.secondaryContainer,
+                ),
+            verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
-                text = "De: ",
-                style = MaterialTheme.typography.labelMedium,
-                fontWeight = FontWeight.Medium
-            )
-            CurrencySelect(
-                modifier = Modifier.padding(8.dp),
-                currencyName = "BRL",
-                onClick = {},
-            )
-            Text(
-                text = "Para: ",
-                style = MaterialTheme.typography.labelMedium,
-                fontWeight = FontWeight.Medium
-            )
-            CurrencySelect(
-                modifier = Modifier.padding(8.dp),
-                currencyName = "BRL",
-                onClick = {},
-            )
-            Text(
-                text = stringResource(R.string.currency_to_convert_value),
-                style = MaterialTheme.typography.labelMedium,
-                fontWeight = FontWeight.Medium
-            )
-            var value by remember { mutableStateOf(value = "") }
-            OutlinedTextField(
-                value = value,
-                shape = MaterialTheme.shapes.medium,
-                colors = OutlinedTextFieldDefaults.colors(
-                    unfocusedBorderColor = MaterialTheme.colorScheme.secondaryContainer,
-                ),
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(8.dp),
-                textStyle = TextStyle(MaterialTheme.colorScheme.secondary),
-                onValueChange = { newValue ->
-                    value = newValue
-                }
+                    .weight(1f)
+                    .padding(16.dp),
+                text = viewState.result,
+                style = MaterialTheme.typography.titleLarge,
+                textAlign = TextAlign.Center,
             )
-            Text(
-                text = stringResource(R.string.currency_result),
-                style = MaterialTheme.typography.labelMedium,
-                fontWeight = FontWeight.Medium
-            )
-            Row(
-                modifier
-                    .border(
-                        width = 1.dp,
-                        shape = MaterialTheme.shapes.medium,
-                        color = MaterialTheme.colorScheme.secondaryContainer,
-                    ),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Text(
-                    modifier = Modifier
-                        .weight(1f)
-                        .padding(16.dp),
-                    text = viewState.result,
-                    style = MaterialTheme.typography.titleLarge,
-                    textAlign = TextAlign.Center,
-                )
-            }
         }
+
+    }
+}
+
+@Composable
+fun ContentCurrencyConverterScreen(
+    modifier: Modifier,
+    onClick: () -> Unit,
+) {
+    Column(
+        modifier = Modifier
+            .padding(16.dp)
+            .fillMaxSize(),
+        verticalArrangement = Arrangement.spacedBy(16.dp)
+    ) {
+        Text(
+            text = "De: ",
+            style = MaterialTheme.typography.labelMedium,
+            fontWeight = FontWeight.Medium
+        )
+        CurrencySelect(
+            modifier = Modifier.padding(8.dp),
+            currencyName = "BRL",
+            onClick = {},
+        )
+        Text(
+            text = "Para: ",
+            style = MaterialTheme.typography.labelMedium,
+            fontWeight = FontWeight.Medium
+        )
+        CurrencySelect(
+            modifier = Modifier.padding(8.dp),
+            currencyName = "BRL",
+            onClick = {},
+        )
+        Text(
+            text = stringResource(R.string.currency_to_convert_value),
+            style = MaterialTheme.typography.labelMedium,
+            fontWeight = FontWeight.Medium
+        )
+        var value by remember { mutableStateOf(value = "") }
+        OutlinedTextField(
+            value = value,
+            shape = MaterialTheme.shapes.medium,
+            colors = OutlinedTextFieldDefaults.colors(
+                unfocusedBorderColor = MaterialTheme.colorScheme.secondaryContainer,
+            ),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(8.dp),
+            textStyle = TextStyle(MaterialTheme.colorScheme.secondary),
+            onValueChange = { newValue ->
+                value = newValue
+            }
+        )
+        Text(
+            text = stringResource(R.string.currency_result),
+            style = MaterialTheme.typography.labelMedium,
+            fontWeight = FontWeight.Medium
+        )
     }
 }
 
@@ -172,13 +181,12 @@ fun CurrencySelect(
 
 @Preview
 @Composable
-private fun CurrencyConventerScreenPreview() {
+private fun ContentCurrencyConventerScreenPreview() {
     BTGCurrencyConverterTheme {
-        /*CurrencyConventerScreen(
+        ContentCurrencyConverterScreen(
             modifier = Modifier,
-            viewModel = CurrencyConverterViewModel(),
             onClick = {},
-        )*/
+        )
     }
 }
 

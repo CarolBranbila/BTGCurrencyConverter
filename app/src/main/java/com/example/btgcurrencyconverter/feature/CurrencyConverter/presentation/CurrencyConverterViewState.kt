@@ -10,5 +10,4 @@ data class CurrencyConverterViewState(
 data class Tax(
     val code : String,
     val taxValue:String,
-    val data: List<Currency> = emptyList()
 )
