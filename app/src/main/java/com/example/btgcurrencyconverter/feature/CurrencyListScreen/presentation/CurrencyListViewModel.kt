@@ -3,12 +3,16 @@ package com.example.btgcurrencyconverter.feature.CurrencyListScreen.presentation
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.btgcurrencyconverter.data.network.RetrofitInstance
+import com.example.btgcurrencyconverter.domain.CurrencyRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class CurrencyListViewModel : ViewModel() {
+class CurrencyListViewModel @Inject constructor(
+    currencyRepository: CurrencyRepository,
+): ViewModel() {
 
     private val _viewState = MutableStateFlow(CurrencyListViewState(emptyList()))
     val viewState = _viewState.asStateFlow()
