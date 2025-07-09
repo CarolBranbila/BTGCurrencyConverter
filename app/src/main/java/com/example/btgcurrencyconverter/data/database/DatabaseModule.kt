@@ -21,4 +21,9 @@ object DatabaseModule {
     fun provideCurrencyDao(
         appDataBase: AppDataBase
     ): CurrencyDao = appDataBase.currencyDao()
+
+    @Provides
+    fun provideQuotesDao(
+        appDataBase: AppDataBase
+    ): QuotesDao = appDataBase.quotesDao()
 }

@@ -4,8 +4,9 @@ import com.example.btgcurrencyconverter.data.database.QuotesDao
 import com.example.btgcurrencyconverter.data.database.QuotesEntity
 import com.example.btgcurrencyconverter.data.network.BTGApi
 import com.example.btgcurrencyconverter.data.network.CurrencyListResponse
+import javax.inject.Inject
 
-class QuotesRepository (
+class QuotesRepository @Inject constructor (
     private val api: BTGApi,
     private val quotesDao: QuotesDao,
 ){
