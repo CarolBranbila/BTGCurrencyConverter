@@ -5,7 +5,7 @@ import androidx.room.Room
 
 fun createRoomDatabaseInstance(
     applicationContext: Context
-) =
+): AppDataBase =
     Room.databaseBuilder(
         applicationContext,
         AppDataBase::class.java,

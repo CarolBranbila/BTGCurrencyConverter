@@ -174,11 +174,11 @@ fun CurrencySelect(
 @Composable
 private fun CurrencyConventerScreenPreview() {
     BTGCurrencyConverterTheme {
-        CurrencyConventerScreen(
+        /*CurrencyConventerScreen(
             modifier = Modifier,
             viewModel = CurrencyConverterViewModel(),
             onClick = {},
-        )
+        )*/
     }
 }
 

@@ -4,6 +4,7 @@ plugins {
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.kotlinx.serialization)
     alias(libs.plugins.ksp)
+    alias(libs.plugins.hilt)
 }
 
 android {
@@ -58,6 +59,9 @@ dependencies {
     implementation(libs.converter.kotlinx.serialization)
     implementation(libs.room.runtime)
     implementation(libs.room.ktx)
+    implementation(libs.hilt.android)
+    implementation(libs.hilt.android.navigation)
+    ksp(libs.hilt.android.compiler)
     ksp(libs.room.ksp)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
