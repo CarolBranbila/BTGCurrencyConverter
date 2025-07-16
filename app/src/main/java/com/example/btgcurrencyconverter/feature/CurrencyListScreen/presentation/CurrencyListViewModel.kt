@@ -4,12 +4,14 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.btgcurrencyconverter.data.network.RetrofitInstance
 import com.example.btgcurrencyconverter.domain.CurrencyRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+@HiltViewModel
 class CurrencyListViewModel @Inject constructor(
     currencyRepository: CurrencyRepository,
 ): ViewModel() {

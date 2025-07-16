@@ -1,5 +1,6 @@
 package com.example.btgcurrencyconverter.feature.CurrencyConverter.presentation
 
+import androidx.compose.runtime.currentComposer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.btgcurrencyconverter.data.network.RetrofitInstance
@@ -24,12 +25,5 @@ class CurrencyConverterViewModel @Inject constructor(
             currencyRepository.fetchCurrencyList()
         }
     }
-    /*private suspend fun fetchCurrencyList(): List<Currency> {
-        return api.getQuotesList().currencies.map {
-            Tax(
-                code = it.key,
-                taxValue = it.value,
-            )
-        }
-*/
+
 }
