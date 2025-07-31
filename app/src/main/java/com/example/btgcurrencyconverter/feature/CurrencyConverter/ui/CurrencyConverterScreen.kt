@@ -1,6 +1,7 @@
 package com.example.btgcurrencyconverter.feature.CurrencyConverter.ui
 
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -22,6 +23,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.minimumInteractiveComponentSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -30,6 +32,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
@@ -52,6 +56,7 @@ fun CurrencyConventerScreen(
     val viewState by viewModel.viewState.collectAsStateWithLifecycle()
 
     Scaffold(
+        modifier = modifier,
         topBar = {
             TopAppBar(
                 title = { Text("Conversor de Moedas") },
@@ -81,18 +86,6 @@ fun CurrencyConventerScreen(
                         viewModel.validIfInputIsValid(newValue, oldValue)
                     }
                 )
-
-                Row(
-                    modifier
-                        .border(
-                            width = 1.dp,
-                            shape = MaterialTheme.shapes.medium,
-                            color = MaterialTheme.colorScheme.secondaryContainer,
-                        ),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-
-                }
             }
         }
     }
@@ -117,23 +110,13 @@ fun ContentCurrencyConverterScreen(
             style = MaterialTheme.typography.labelMedium,
             fontWeight = FontWeight.Medium
         )
-        Row (
-            modifier = modifier
-                .padding(8.dp)
-                .border(
-                    width = 1.dp,
-                    shape = MaterialTheme.shapes.medium,
-                    color = MaterialTheme.colorScheme.secondaryContainer,
-                ),
-            verticalAlignment = Alignment.CenterVertically,
-        ){
-            Text(
-                modifier = Modifier
-                    .weight(1f)
-                    .padding(16.dp),
-                text = "USD - United States Dollar"
-            )
-        }
+
+        CurrencySelect(
+            modifier = Modifier.padding(8.dp),
+            currencyName = "USD - United States Dollar",
+            onClick = null,
+        )
+
         Text(
             text = "Para: ",
             style = MaterialTheme.typography.labelMedium,
@@ -190,35 +173,41 @@ fun ContentCurrencyConverterScreen(
 fun CurrencySelect(
     modifier: Modifier,
     currencyName: String,
-    onClick: () -> Unit,
+    onClick: (() -> Unit)?,
 ) {
+
+    val clickableModifier = onClick?.let {
+        Modifier.clickable(
+            onClick = it,
+            role = Role.Button,
+        )
+    } ?: Modifier
+
     Row(
-        modifier = modifier
+        modifier = clickableModifier
             .border(
                 width = 1.dp,
                 shape = MaterialTheme.shapes.medium,
                 color = MaterialTheme.colorScheme.secondaryContainer,
-            ),
+            )
+            .padding(vertical = 8.dp)
+            .minimumInteractiveComponentSize(),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(
             modifier = Modifier
-                .weight(1f)
-                .padding(start = 16.dp),
+                .padding(start = 16.dp)
+                .weight(1f),
             text = currencyName
         )
-        Column(
-            modifier = modifier,
-            horizontalAlignment = Alignment.End
-        ) {
-            IconButton(onClick = onClick) {
-                Icon(
-                    Icons.Filled.KeyboardArrowRight,
-                    contentDescription = "Selecionar a moeda",
-                    tint = MaterialTheme.colorScheme.secondary
-                )
-            }
-
+        onClick?.let {
+            Icon(
+                modifier = Modifier
+                    .padding(end = 16.dp),
+                imageVector = Icons.Filled.KeyboardArrowRight,
+                contentDescription = "Selecionar a moeda",
+                tint = MaterialTheme.colorScheme.secondary
+            )
         }
     }
 }
