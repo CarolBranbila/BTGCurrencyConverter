@@ -51,7 +51,6 @@ fun MainNavGraph() {
                 CurrencyListScreen(
                     modifier = Modifier,
                     viewModel = viewModel,
-                    list = emptyList(),
                     onClick = {
                         navController.navigate(
                             CurrencyConverter,
