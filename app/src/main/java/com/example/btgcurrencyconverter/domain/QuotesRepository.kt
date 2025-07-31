@@ -3,7 +3,7 @@ package com.example.btgcurrencyconverter.domain
 import com.example.btgcurrencyconverter.data.database.QuotesDao
 import com.example.btgcurrencyconverter.data.database.QuotesEntity
 import com.example.btgcurrencyconverter.data.network.BTGApi
-import com.example.btgcurrencyconverter.data.network.CurrencyListResponse
+import com.example.btgcurrencyconverter.data.network.QuotesListResponse
 import javax.inject.Inject
 
 class QuotesRepository @Inject constructor (
@@ -23,11 +23,11 @@ class QuotesRepository @Inject constructor (
     }
 }
 
-private fun CurrencyListResponse.toEntity(): List<QuotesEntity>{
-    return this.currencies.map{
+private fun QuotesListResponse.toEntity(): List<QuotesEntity>{
+    return this.quotes.map{
         QuotesEntity(
             code = it.key,
-            value = it.value,
+            value = it.value.toString(),
         )
     }
 }

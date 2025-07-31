@@ -19,42 +19,19 @@ class CurrencyListViewModel @Inject constructor(
     private val _viewState = MutableStateFlow(CurrencyListViewState(emptyList()))
     val viewState = _viewState.asStateFlow()
 
-    private val api = RetrofitInstance.createBTGApi()
 
     init {
-        loadCurrencyList()
-    }
-
-    fun loadCurrencyList() {
         viewModelScope.launch {
-            _viewState.update {
-                try {
-                    val actualList = _viewState.value.list
-                    _viewState.value = _viewState.value.copy(
-                        actualList,
-                        isLoading = actualList.isEmpty(),
-                        isError = false
-                    )
-                    val newList = fetchCurrencyList()
-
-                    _viewState.value.copy(
-                        list = actualList + newList,
-                        isLoading = false,
-                        isError = false
-                    )
-                } catch (ex: Exception) {
-                    _viewState.value.copy(isLoading = false, isError = true)
-                }
+            val entity = currencyRepository.getCurrencyList() // converter a currency entity para a currency da viewState : D
+            val mapped = entity.map {
+                Currency(
+                    name = it.currencyName + " " + it.code,
+                    isSelected = false
+                )
             }
+
+            _viewState.value = _viewState.value.copy(list = mapped)
         }
     }
 
-    private suspend fun fetchCurrencyList(): List<Currency> {
-        return api.getCurrencyNameList().currencies.map {
-            Currency(
-                name = it.key,
-                isSelected = false,
-            )
-        }
-    }
 }

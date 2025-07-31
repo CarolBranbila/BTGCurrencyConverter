@@ -47,7 +47,7 @@ fun MainNavGraph() {
                 )
             }
             composable<CurrencyList> {
-                val viewModel = viewModel<CurrencyListViewModel>()
+                val viewModel = hiltViewModel<CurrencyListViewModel>()
                 CurrencyListScreen(
                     modifier = Modifier,
                     viewModel = viewModel,

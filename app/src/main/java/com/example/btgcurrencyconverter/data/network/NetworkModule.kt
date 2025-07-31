@@ -15,6 +15,4 @@ object NetworkModule {
     @Provides
     fun provideBtgApi(): BTGApi = RetrofitInstance.createBTGApi()
 
-    @Provides
-    fun provideRetrofit(): RetrofitInstance = RetrofitInstance
 }

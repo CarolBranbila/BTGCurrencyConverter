@@ -36,7 +36,7 @@ fun CurrencyListScreen(
             .padding(16.dp)
     ) {
         items(
-            items = list,
+            items = viewState.list,
             key = null,
         ) {
             CurrencyItem(

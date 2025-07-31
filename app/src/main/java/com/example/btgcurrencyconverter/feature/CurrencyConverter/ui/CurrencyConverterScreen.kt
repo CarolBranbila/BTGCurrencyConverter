@@ -2,13 +2,16 @@ package com.example.btgcurrencyconverter.feature.CurrencyConverter.ui
 
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowRight
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -29,12 +32,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.btgcurrencyconverter.R
 import com.example.btgcurrencyconverter.feature.CurrencyConverter.presentation.CurrencyConverterViewModel
+import com.example.btgcurrencyconverter.feature.CurrencyConverter.presentation.CurrencyConverterViewState
 import com.example.btgcurrencyconverter.ui.theme.BTGCurrencyConverterTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -57,38 +62,52 @@ fun CurrencyConventerScreen(
             )
         }
     ) { innerPadding ->
-        ContentCurrencyConverterScreen(
-            modifier = Modifier.padding(innerPadding)
-        ) { }
-        Row(
-            modifier
-                .border(
-                    width = 1.dp,
-                    shape = MaterialTheme.shapes.medium,
-                    color = MaterialTheme.colorScheme.secondaryContainer,
-                ),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Text(
-                modifier = Modifier
-                    .weight(1f)
-                    .padding(16.dp),
-                text = viewState.result,
-                style = MaterialTheme.typography.titleLarge,
-                textAlign = TextAlign.Center,
-            )
-        }
+        when {
+            viewState.isLoading ->
+                ScreenLoading(
+                    modifier = Modifier
+                        .padding(innerPadding)
+                )
 
+            else -> {
+                ContentCurrencyConverterScreen(
+                    modifier = Modifier.padding(innerPadding),
+                    viewState = viewState,
+                    onInputUpdate = {
+                        viewModel.updateCurrencyValue(it)
+                    },
+                    onTargetClick = onClick,
+                    onValidateInput = { newValue, oldValue ->
+                        viewModel.validIfInputIsValid(newValue, oldValue)
+                    }
+                )
+
+                Row(
+                    modifier
+                        .border(
+                            width = 1.dp,
+                            shape = MaterialTheme.shapes.medium,
+                            color = MaterialTheme.colorScheme.secondaryContainer,
+                        ),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+
+                }
+            }
+        }
     }
 }
 
 @Composable
 fun ContentCurrencyConverterScreen(
     modifier: Modifier,
-    onClick: () -> Unit,
+    viewState: CurrencyConverterViewState,
+    onInputUpdate: (String) -> Unit,
+    onValidateInput: (String, String) -> String,
+    onTargetClick: () -> Unit,
 ) {
     Column(
-        modifier = Modifier
+        modifier = modifier
             .padding(16.dp)
             .fillMaxSize(),
         verticalArrangement = Arrangement.spacedBy(16.dp)
@@ -100,7 +119,7 @@ fun ContentCurrencyConverterScreen(
         )
         CurrencySelect(
             modifier = Modifier.padding(8.dp),
-            currencyName = "BRL",
+            currencyName = viewState.source,
             onClick = {},
         )
         Text(
@@ -110,8 +129,8 @@ fun ContentCurrencyConverterScreen(
         )
         CurrencySelect(
             modifier = Modifier.padding(8.dp),
-            currencyName = "BRL",
-            onClick = {},
+            currencyName = viewState.target,
+            onClick = onTargetClick,
         )
         Text(
             text = stringResource(R.string.currency_to_convert_value),
@@ -129,14 +148,27 @@ fun ContentCurrencyConverterScreen(
                 .fillMaxWidth()
                 .padding(8.dp),
             textStyle = TextStyle(MaterialTheme.colorScheme.secondary),
-            onValueChange = { newValue ->
-                value = newValue
+            keyboardOptions = KeyboardOptions(
+                keyboardType = KeyboardType.Decimal,
+            ),
+            onValueChange = { newValue: String ->
+                value = onValidateInput(newValue, value)
+
+                onInputUpdate(value)
             }
         )
         Text(
             text = stringResource(R.string.currency_result),
             style = MaterialTheme.typography.labelMedium,
             fontWeight = FontWeight.Medium
+        )
+
+        Text(
+            modifier = Modifier
+                .padding(8.dp),
+            text = viewState.result,
+            style = MaterialTheme.typography.titleLarge,
+            textAlign = TextAlign.Center,
         )
     }
 }
@@ -179,13 +211,33 @@ fun CurrencySelect(
     }
 }
 
+@Composable
+fun ScreenLoading(modifier: Modifier) {
+    Box(
+        modifier = modifier
+            .fillMaxSize(),
+        contentAlignment = Alignment.Center,
+    ) {
+        CircularProgressIndicator(
+        )
+    }
+
+}
+
 @Preview
 @Composable
 private fun ContentCurrencyConventerScreenPreview() {
     BTGCurrencyConverterTheme {
         ContentCurrencyConverterScreen(
             modifier = Modifier,
-            onClick = {},
+            viewState = CurrencyConverterViewState(
+                result = "33"
+            ),
+            onInputUpdate = {},
+            onTargetClick = {
+                println("target clicked")
+            },
+            onValidateInput = { _, _ -> "" }
         )
     }
 }
@@ -199,6 +251,16 @@ private fun CurrencySelectPreview() {
             modifier = Modifier,
             currencyName = "BRL",
             onClick = {}
+        )
+    }
+}
+
+@Preview
+@Composable
+private fun ScreenLoadingPreview() {
+    BTGCurrencyConverterTheme {
+        ScreenLoading(
+            modifier = Modifier,
         )
     }
 }
