@@ -25,7 +25,7 @@ class CurrencyListViewModel @Inject constructor(
             val entity = currencyRepository.getCurrencyList() // converter a currency entity para a currency da viewState : D
             val mapped = entity.map {
                 Currency(
-                    name = it.currencyName + " " + it.code,
+                    name = it.code + " " + it.currencyName ,
                     isSelected = false
                 )
             }

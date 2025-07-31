@@ -117,11 +117,23 @@ fun ContentCurrencyConverterScreen(
             style = MaterialTheme.typography.labelMedium,
             fontWeight = FontWeight.Medium
         )
-        CurrencySelect(
-            modifier = Modifier.padding(8.dp),
-            currencyName = viewState.source,
-            onClick = {},
-        )
+        Row (
+            modifier = modifier
+                .padding(8.dp)
+                .border(
+                    width = 1.dp,
+                    shape = MaterialTheme.shapes.medium,
+                    color = MaterialTheme.colorScheme.secondaryContainer,
+                ),
+            verticalAlignment = Alignment.CenterVertically,
+        ){
+            Text(
+                modifier = Modifier
+                    .weight(1f)
+                    .padding(16.dp),
+                text = "USD - United States Dollar"
+            )
+        }
         Text(
             text = "Para: ",
             style = MaterialTheme.typography.labelMedium,
