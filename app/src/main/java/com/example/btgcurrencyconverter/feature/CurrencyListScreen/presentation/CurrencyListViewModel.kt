@@ -26,6 +26,7 @@ class CurrencyListViewModel @Inject constructor(
             val mapped = entity.map {
                 Currency(
                     name = it.code + " " + it.currencyName ,
+                    id = it.id,
                     isSelected = false
                 )
             }

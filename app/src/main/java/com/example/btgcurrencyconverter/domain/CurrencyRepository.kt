@@ -27,6 +27,8 @@ class CurrencyRepository @Inject constructor(
     suspend fun getCurrencyList(): List<CurrencyEntity> {
         return currencyDao.getAll()
     }
+
+    //getCurrencyByID
 }
 
 private fun CurrencyResponse.toEntity(): List<CurrencyEntity> {

@@ -35,7 +35,7 @@ import java.time.format.TextStyle
 fun CurrencyListScreen(
     modifier: Modifier = Modifier,
     viewModel: CurrencyListViewModel,
-    onClick: (Currency) -> Unit,
+    onClick: (Long) -> Unit,
 ) {
     val viewState by viewModel.viewState.collectAsState()
 
@@ -49,8 +49,7 @@ fun CurrencyListScreen(
         ) {
             CurrencyItem(
                 name = it.name,
-                isSelected = it.isSelected,
-                onClick = { onClick(it) },
+                onClick = { onClick(it.id) },
             )
             Spacer(
                 modifier = Modifier
@@ -64,12 +63,11 @@ fun CurrencyListScreen(
 fun CurrencyItem(
     modifier: Modifier = Modifier,
     name: String,
-    isSelected: Boolean,
-    onClick: (Currency) -> Unit,
+    onClick: () -> Unit,
 ) {
     OutlinedButton(
-        modifier = Modifier.padding(4.dp),
-        onClick = {onClick},
+        modifier = modifier.padding(4.dp),
+        onClick = onClick,
         shape = ShapeDefaults.Medium,
     ) {
         Text(
@@ -91,17 +89,14 @@ private fun CurrencyItemPreview() {
         Column {
             CurrencyItem(
                 name = "AED:United Arab Emirates Dirham",
-                isSelected = false,
                 onClick = { },
             )
             CurrencyItem(
                 name = "AED:United Arab Emirates",
-                isSelected = false,
                 onClick = { },
             )
             CurrencyItem(
                 name = "AED:United Arab Emirates",
-                isSelected = false,
                 onClick = { },
             )
         }

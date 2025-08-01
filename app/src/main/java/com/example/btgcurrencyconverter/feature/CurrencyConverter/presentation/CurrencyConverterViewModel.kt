@@ -19,7 +19,7 @@ import javax.inject.Inject
  */
 @HiltViewModel
 class CurrencyConverterViewModel @Inject constructor(
-    currencyRepository: CurrencyRepository,
+    private val currencyRepository: CurrencyRepository,
     private val quotesRepository: QuotesRepository,
 ) : ViewModel() {
     private val _viewState = MutableStateFlow(CurrencyConverterViewState())
@@ -81,5 +81,17 @@ class CurrencyConverterViewModel @Inject constructor(
         return BigDecimal(
             quotesRepository.getQuotesList().first { it.code == "$source$target" }.value
         ).multiply(BigDecimal(currentValue.replace(",", ".")))
+    }
+
+    fun setSelectedCurrency(currencyId: Long) {
+        viewModelScope.launch {
+            _viewState.update {
+                it.copy(
+                    target = currencyRepository.getCurrencyList().first { it.id == currencyId }
+                        .code,
+                    result = "",
+                )
+            }
+        }
     }
 }

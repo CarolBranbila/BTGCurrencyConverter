@@ -8,5 +8,6 @@ data class CurrencyListViewState(
 
 data class Currency(
     val name : String,
+    val id: Long,
     val isSelected:Boolean
 )
