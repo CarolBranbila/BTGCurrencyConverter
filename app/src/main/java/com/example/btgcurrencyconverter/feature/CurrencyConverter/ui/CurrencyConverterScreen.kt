@@ -113,7 +113,7 @@ fun ContentCurrencyConverterScreen(
 
         CurrencySelect(
             modifier = Modifier.padding(8.dp),
-            currencyName = "USD - United States Dollar",
+            currencyName = "USD",
             onClick = null,
         )
 

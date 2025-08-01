@@ -83,13 +83,13 @@ class CurrencyConverterViewModel @Inject constructor(
         ).multiply(BigDecimal(currentValue.replace(",", ".")))
     }
 
-    fun setSelectedCurrency(currencyId: Long) {
+    fun setSelectedCurrency(currencyId: Long){
         viewModelScope.launch {
             _viewState.update {
                 it.copy(
-                    target = currencyRepository.getCurrencyList().first { it.id == currencyId }
-                        .code,
+                    target = currencyRepository.getCurrencyById(currencyId)?.code.orEmpty(),
                     result = "",
+
                 )
             }
         }

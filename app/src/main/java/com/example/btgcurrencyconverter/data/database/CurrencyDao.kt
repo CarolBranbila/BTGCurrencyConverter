@@ -16,4 +16,7 @@ interface CurrencyDao {
 
     @Query("SELECT * FROM CurrencyEntity")
     suspend fun getAll(): List<CurrencyEntity>
+
+    @Query ("SELECT * FROM CurrencyEntity WHERE id = :id")
+    suspend fun getById(id: Long): CurrencyEntity?
 }
