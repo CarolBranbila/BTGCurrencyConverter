@@ -24,8 +24,8 @@ An Android application for currency conversion that allows you to convert from U
 - **Architecture:** MVVM (Model-View-ViewModel)
 - **Libraries:**
   - Retrofit for HTTP requests
-  - Gson for JSON parsing
   - Hilt for dependency injection
+  - Kotlinx Serialization
 
 
 ## 📋 Prerequisites
@@ -47,11 +47,7 @@ An Android application for currency conversion that allows you to convert from U
    - Select "Open an existing project"
    - Navigate to the project folder and open it
 
-3. **Configure API (if necessary)**
-   - Check if an API key is required
-   - Configure credentials in the appropriate file
-
-4. **Run the project**
+3. **Run the project**
    - Connect an Android device or start an emulator
    - Click "Run" or press `Shift + F10`
 
