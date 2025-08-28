@@ -12,11 +12,6 @@ import kotlinx.coroutines.launch
 import java.math.BigDecimal
 import javax.inject.Inject
 
-/**
- * TODO: 1. criar uma funcao para converter -> o resultado dela deve atualizar o viewState -> a funçao usa 3 parametros moeda DE | moeda PARA | valor para converter
- * 2. Atualizar o view state para representar a sua Screen ( nao tem lista)
- * 3.
- */
 @HiltViewModel
 class CurrencyConverterViewModel @Inject constructor(
     private val currencyRepository: CurrencyRepository,
@@ -74,9 +69,9 @@ class CurrencyConverterViewModel @Inject constructor(
 
 
     private suspend fun convert(
-        source: String, // Moeda de origem USD
-        target: String, // moeda para qual quer converter BRL
-        currentValue: String, // valor a ser convertido
+        source: String,
+        target: String,
+        currentValue: String,
     ): BigDecimal {
         return BigDecimal(
             quotesRepository.getQuotesList().first { it.code == "$source$target" }.value
