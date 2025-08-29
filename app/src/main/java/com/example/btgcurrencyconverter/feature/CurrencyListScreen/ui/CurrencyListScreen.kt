@@ -11,10 +11,14 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.AssistChipDefaults
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.ShapeDefaults
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -31,6 +35,7 @@ import com.example.btgcurrencyconverter.feature.CurrencyListScreen.presentation.
 import com.example.btgcurrencyconverter.ui.theme.BTGCurrencyConverterTheme
 import java.time.format.TextStyle
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CurrencyListScreen(
     modifier: Modifier = Modifier,
@@ -39,22 +44,36 @@ fun CurrencyListScreen(
 ) {
     val viewState by viewModel.viewState.collectAsState()
 
-    LazyColumn(
-        modifier = modifier
-            .padding(16.dp)
-    ) {
-        items(
-            items = viewState.list,
-            key = null,
+    Scaffold(
+        modifier = modifier,
+        topBar = {
+            TopAppBar(
+                title = { Text("Conversor de Moedas") },
+                colors = TopAppBarDefaults.topAppBarColors(
+                    MaterialTheme.colorScheme.primary,
+                    titleContentColor = MaterialTheme.colorScheme.onPrimary,
+                ),
+            )
+        }
+    ) { innerPadding ->
+        LazyColumn(
+            modifier = modifier
+                .padding(innerPadding)
+                .padding(16.dp)
         ) {
-            CurrencyItem(
-                name = it.name,
-                onClick = { onClick(it.id) },
-            )
-            Spacer(
-                modifier = Modifier
-                    .padding(6.dp)
-            )
+            items(
+                items = viewState.list,
+                key = null,
+            ) {
+                CurrencyItem(
+                    name = it.name,
+                    onClick = { onClick(it.id) },
+                )
+                Spacer(
+                    modifier = Modifier
+                        .padding(6.dp)
+                )
+            }
         }
     }
 }
