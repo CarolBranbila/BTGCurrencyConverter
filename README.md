@@ -4,8 +4,8 @@ An Android application for currency conversion that allows you to convert from U
 
 ## 📱 Screenshots
 <p align="center">
-  <img src="https://github.com/CarolBranbila/BTGCurrencyConverter/blob/main/btgimagesapp/1.png" alt="Screenshot 1" width="200"/>
-  <img src="https://github.com/CarolBranbila/BTGCurrencyConverter/blob/main/btgimagesapp/2.png" alt="Screenshot 2" width="200"/>
+  <img src="https://github.com/CarolBranbila/BTGCurrencyConverter/blob/main/.gitdocuments/1.png" alt="Screenshot 1" width="200"/>
+  <img src="https://github.com/CarolBranbila/BTGCurrencyConverter/blob/main/.gitdocuments/2.png" alt="Screenshot 2" width="200"/>
 </p>
 
 ## ✨ Features
