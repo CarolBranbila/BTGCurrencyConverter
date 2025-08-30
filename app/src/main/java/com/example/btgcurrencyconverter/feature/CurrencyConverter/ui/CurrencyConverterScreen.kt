@@ -106,7 +106,7 @@ fun ContentCurrencyConverterScreen(
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         Text(
-            text = "De: ",
+            text = stringResource(R.string.currency_from),
             style = MaterialTheme.typography.labelMedium,
             fontWeight = FontWeight.Medium
         )
@@ -118,7 +118,7 @@ fun ContentCurrencyConverterScreen(
         )
 
         Text(
-            text = "Para: ",
+            text = stringResource(R.string.currency_to),
             style = MaterialTheme.typography.labelMedium,
             fontWeight = FontWeight.Medium
         )
