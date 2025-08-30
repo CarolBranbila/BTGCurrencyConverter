@@ -26,6 +26,7 @@ An Android application for currency conversion that allows you to convert from U
   - Retrofit for HTTP requests
   - Hilt for dependency injection
   - Kotlinx Serialization
+  - Room for local database
 
 
 ## 📋 Prerequisites
