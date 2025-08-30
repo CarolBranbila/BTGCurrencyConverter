@@ -6,23 +6,22 @@ import com.example.btgcurrencyconverter.data.network.BTGApi
 import com.example.btgcurrencyconverter.data.network.CurrencyResponse
 import com.example.btgcurrencyconverter.feature.CurrencyListScreen.presentation.Currency
 import javax.inject.Inject
+import kotlin.text.isEmpty
 
 class CurrencyRepository @Inject constructor(
     private val api: BTGApi,
     private val currencyDao: CurrencyDao,
 ) {
 
-    /**
-     * Download currencies
-     * Convert them to database entities
-     * Save them on database
-     */
     suspend fun fetchCurrencyList() {
-        val response = api.getCurrencyNameList()
+        if (currencyDao.getAll().isEmpty()){
+            val response = api.getCurrencyNameList()
 
-        val entityList = response.toEntity()
+            val entityList = response.toEntity()
 
-        currencyDao.insertAll(entityList)
+            currencyDao.insertAll(entityList)
+        }
+
     }
 
     suspend fun getCurrencyList(): List<CurrencyEntity> {

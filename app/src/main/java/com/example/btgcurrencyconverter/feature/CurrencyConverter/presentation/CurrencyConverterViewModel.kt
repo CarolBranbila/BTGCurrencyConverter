@@ -2,6 +2,7 @@ package com.example.btgcurrencyconverter.feature.CurrencyConverter.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.room.util.copy
 import com.example.btgcurrencyconverter.domain.CurrencyRepository
 import com.example.btgcurrencyconverter.domain.QuotesRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -55,14 +56,20 @@ class CurrencyConverterViewModel @Inject constructor(
 
     fun updateCurrencyValue(input: String) {
         viewModelScope.launch {
-            _viewState.update {
-                val convertedValue = convert(
-                    source = it.source,
-                    target = it.target,
-                    currentValue = input,
-                )
+            if (input.isNotEmpty()) {
+                _viewState.update {
+                    val convertedValue = convert(
+                        source = it.source,
+                        target = it.target,
+                        currentValue = input,
+                    )
 
-                it.copy(result = convertedValue.toString())
+                    it.copy(result = convertedValue.toString())
+                }
+            } else {
+                _viewState.update {
+                    it.copy(result = "0")
+                }
             }
         }
     }
