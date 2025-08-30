@@ -61,7 +61,7 @@ fun CurrencyConventerScreen(
             TopAppBar(
                 title = { Text("Conversor de Moedas") },
                 colors = TopAppBarDefaults.topAppBarColors(
-                    MaterialTheme.colorScheme.primary,
+                    containerColor =  MaterialTheme.colorScheme.primary,
                     titleContentColor = MaterialTheme.colorScheme.onPrimary,
                 ),
             )
