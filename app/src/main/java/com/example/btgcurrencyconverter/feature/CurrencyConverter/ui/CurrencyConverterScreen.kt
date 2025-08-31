@@ -84,7 +84,7 @@ fun CurrencyConventerScreen(
             viewState.isError ->
                 ErrorMessageScreen(
                     message = viewState.errorMessage,
-                    onClick = {viewModel.OnTryAgainClick() }
+                    onClick = {viewModel.onTryAgainClick() }
                 )
 
             else -> {

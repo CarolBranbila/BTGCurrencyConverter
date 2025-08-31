@@ -14,6 +14,7 @@ import retrofit2.HttpException
 import java.lang.Exception
 import java.math.BigDecimal
 import java.net.ConnectException
+import java.net.UnknownHostException
 import javax.inject.Inject
 
 @HiltViewModel
@@ -25,7 +26,7 @@ class CurrencyConverterViewModel @Inject constructor(
     val viewState = _viewState.asStateFlow()
 
     init {
-        FetchCurrency()
+        fetchCurrency()
     }
 
 
@@ -89,7 +90,7 @@ class CurrencyConverterViewModel @Inject constructor(
         }
     }
 
-    private fun FetchCurrency(){
+    private fun fetchCurrency(){
         viewModelScope.launch {
             _viewState.update {
                 it.copy(
@@ -102,18 +103,18 @@ class CurrencyConverterViewModel @Inject constructor(
             try {
                 currencyRepository.fetchCurrencyList()
                 quotesRepository.fetchQuotesList()
-            } catch (ex: ConnectException) {
-                UpdateError(
+            } catch (ex: UnknownHostException) {
+                updateError(
                     isError = true,
                     errorMessage = "Parece que você está no modo avião"
                 )
             } catch (ex: HttpException) {
-                UpdateError(
+                updateError(
                     isError = true,
                     errorMessage = "Tivemos um problema, tente novamente mais tarde."
                 )
             } catch (ex: Exception) {
-                UpdateError(
+                updateError(
                     isError = true,
                     errorMessage = "Oops algo deu errado :( "
                 )
@@ -125,7 +126,7 @@ class CurrencyConverterViewModel @Inject constructor(
         }
     }
 
-    private fun UpdateError(
+    private fun updateError(
         isError: Boolean,
         errorMessage: String,
     ) {
@@ -137,7 +138,7 @@ class CurrencyConverterViewModel @Inject constructor(
         }
     }
 
-    fun OnTryAgainClick() {
-        FetchCurrency()
+    fun onTryAgainClick() {
+        fetchCurrency()
     }
 }
