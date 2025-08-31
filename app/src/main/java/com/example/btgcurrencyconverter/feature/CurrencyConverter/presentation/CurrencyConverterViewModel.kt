@@ -10,7 +10,10 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import retrofit2.HttpException
+import java.lang.Exception
 import java.math.BigDecimal
+import java.net.ConnectException
 import javax.inject.Inject
 
 @HiltViewModel
@@ -24,11 +27,39 @@ class CurrencyConverterViewModel @Inject constructor(
     init {
         viewModelScope.launch {
             _viewState.update {
-                it.copy(isLoading = true)
+                it.copy(
+                    isLoading = true,
+                    isError = false,
+                    errorMessage = "",
+                )
             }
 
-            currencyRepository.fetchCurrencyList()
-            quotesRepository.fetchQuotesList()
+            try {
+                currencyRepository.fetchCurrencyList()
+                quotesRepository.fetchQuotesList()
+            } catch (ex: ConnectException){
+                _viewState.update {
+                    it.copy(
+                        isError = true,
+                        errorMessage = "Parece que você está no modo avião"
+                    )
+                }
+
+            }catch (ex: HttpException){
+                _viewState.update {
+                    it.copy(
+                        isError = true,
+                        errorMessage = "Tivemos um problema, tente novamente mais tarde",
+                    )
+                }
+            }catch (ex: Exception) {
+                _viewState.update {
+                    it.copy(
+                        isError = true,
+                        errorMessage = "Ops, algo deu errado :(",
+                    )
+                }
+            }
 
             _viewState.update {
                 it.copy(isLoading = false)
@@ -95,5 +126,9 @@ class CurrencyConverterViewModel @Inject constructor(
                 )
             }
         }
+    }
+
+    fun OnTryAgainClick() {
+        TODO("Not yet implemented")
     }
 }

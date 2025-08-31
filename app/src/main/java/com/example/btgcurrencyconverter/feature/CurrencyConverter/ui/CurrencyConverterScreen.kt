@@ -1,17 +1,24 @@
 package com.example.btgcurrencyconverter.feature.CurrencyConverter.ui
 
+import android.os.Message
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowRight
+import androidx.compose.material.icons.filled.Warning
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -61,7 +68,7 @@ fun CurrencyConventerScreen(
             TopAppBar(
                 title = { Text("Conversor de Moedas") },
                 colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor =  MaterialTheme.colorScheme.primary,
+                    containerColor = MaterialTheme.colorScheme.primary,
                     titleContentColor = MaterialTheme.colorScheme.onPrimary,
                 ),
             )
@@ -72,6 +79,12 @@ fun CurrencyConventerScreen(
                 ScreenLoading(
                     modifier = Modifier
                         .padding(innerPadding)
+                )
+
+            viewState.isError ->
+                ErrorMessageScreen(
+                    message = viewState.errorMessage,
+                    onClick = {viewModel.OnTryAgainClick() }
                 )
 
             else -> {
@@ -168,6 +181,49 @@ fun ContentCurrencyConverterScreen(
     }
 }
 
+@Composable
+fun ErrorMessageScreen(
+    message: String,
+    onClick: () -> Unit,
+) {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(24.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
+    ) {
+        Icon(
+            imageVector = Icons.Default.Warning,
+            contentDescription = "Erro",
+            tint = MaterialTheme.colorScheme.error,
+            modifier = Modifier.size(64.dp)
+        )
+        Spacer(
+            modifier = Modifier.height(16.dp)
+        )
+
+        Text(
+            text = message,
+            style = MaterialTheme.typography.headlineMedium,
+            color = MaterialTheme.colorScheme.error,
+            textAlign = TextAlign.Center
+        )
+
+        Spacer(modifier = Modifier.padding(32.dp))
+
+        Button(
+            modifier = Modifier
+                .fillMaxWidth(),
+            onClick = onClick,
+        ) {
+            Text(
+                text = stringResource(R.string.error_button_text),
+                style = MaterialTheme.typography.labelLarge
+            )
+        }
+    }
+}
 
 @Composable
 fun CurrencySelect(
@@ -224,6 +280,19 @@ fun ScreenLoading(modifier: Modifier) {
     }
 
 }
+
+@Preview
+@Composable
+private fun ErrorMessageScreenPreview() {
+    BTGCurrencyConverterTheme {
+        ErrorMessageScreen(
+            message = "Oops!",
+            onClick = { }
+        )
+    }
+}
+
+
 
 @Preview
 @Composable

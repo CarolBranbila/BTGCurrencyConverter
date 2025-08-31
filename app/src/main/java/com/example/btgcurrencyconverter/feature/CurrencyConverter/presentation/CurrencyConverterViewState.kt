@@ -5,4 +5,6 @@ data class CurrencyConverterViewState(
     val target: String = "BRL",
     val result: String = "",
     val isLoading: Boolean = false,
+    val isError: Boolean = false,
+    val errorMessage: String = "",
 )
