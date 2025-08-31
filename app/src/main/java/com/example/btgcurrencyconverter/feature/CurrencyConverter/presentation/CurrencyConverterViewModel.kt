@@ -25,46 +25,7 @@ class CurrencyConverterViewModel @Inject constructor(
     val viewState = _viewState.asStateFlow()
 
     init {
-        viewModelScope.launch {
-            _viewState.update {
-                it.copy(
-                    isLoading = true,
-                    isError = false,
-                    errorMessage = "",
-                )
-            }
-
-            try {
-                currencyRepository.fetchCurrencyList()
-                quotesRepository.fetchQuotesList()
-            } catch (ex: ConnectException){
-                _viewState.update {
-                    it.copy(
-                        isError = true,
-                        errorMessage = "Parece que você está no modo avião"
-                    )
-                }
-
-            }catch (ex: HttpException){
-                _viewState.update {
-                    it.copy(
-                        isError = true,
-                        errorMessage = "Tivemos um problema, tente novamente mais tarde",
-                    )
-                }
-            }catch (ex: Exception) {
-                _viewState.update {
-                    it.copy(
-                        isError = true,
-                        errorMessage = "Ops, algo deu errado :(",
-                    )
-                }
-            }
-
-            _viewState.update {
-                it.copy(isLoading = false)
-            }
-        }
+        FetchCurrency()
     }
 
 
@@ -116,19 +77,67 @@ class CurrencyConverterViewModel @Inject constructor(
         ).multiply(BigDecimal(currentValue.replace(",", ".")))
     }
 
-    fun setSelectedCurrency(currencyId: Long){
+    fun setSelectedCurrency(currencyId: Long) {
         viewModelScope.launch {
             _viewState.update {
                 it.copy(
                     target = currencyRepository.getCurrencyById(currencyId)?.code.orEmpty(),
                     result = "",
 
-                )
+                    )
             }
         }
     }
 
+    private fun FetchCurrency(){
+        viewModelScope.launch {
+            _viewState.update {
+                it.copy(
+                    isLoading = true,
+                    isError = false,
+                    errorMessage = "",
+                )
+            }
+
+            try {
+                currencyRepository.fetchCurrencyList()
+                quotesRepository.fetchQuotesList()
+            } catch (ex: ConnectException) {
+                UpdateError(
+                    isError = true,
+                    errorMessage = "Parece que você está no modo avião"
+                )
+            } catch (ex: HttpException) {
+                UpdateError(
+                    isError = true,
+                    errorMessage = "Tivemos um problema, tente novamente mais tarde."
+                )
+            } catch (ex: Exception) {
+                UpdateError(
+                    isError = true,
+                    errorMessage = "Oops algo deu errado :( "
+                )
+            }
+
+            _viewState.update {
+                it.copy(isLoading = false)
+            }
+        }
+    }
+
+    private fun UpdateError(
+        isError: Boolean,
+        errorMessage: String,
+    ) {
+        _viewState.update {
+            it.copy(
+                isError = isError,
+                errorMessage = errorMessage,
+            )
+        }
+    }
+
     fun OnTryAgainClick() {
-        TODO("Not yet implemented")
+        FetchCurrency()
     }
 }
