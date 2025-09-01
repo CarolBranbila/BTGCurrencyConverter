@@ -27,6 +27,7 @@ An Android application for currency conversion that allows you to convert from U
   - Hilt for dependency injection
   - Kotlinx Serialization
   - Room for local database
+  - MockK for testing
 
 
 ## 📋 Prerequisites
