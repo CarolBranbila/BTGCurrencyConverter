@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.room.util.copy
 import com.example.btgcurrencyconverter.domain.CurrencyRepository
 import com.example.btgcurrencyconverter.domain.QuotesRepository
+import com.example.btgcurrencyconverter.domain.ValidIfInputIsValidUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -21,6 +22,7 @@ import javax.inject.Inject
 class CurrencyConverterViewModel @Inject constructor(
     private val currencyRepository: CurrencyRepository,
     private val quotesRepository: QuotesRepository,
+    private val validIfInputIsValidUseCase: ValidIfInputIsValidUseCase,
 ) : ViewModel() {
     private val _viewState = MutableStateFlow(CurrencyConverterViewState())
     val viewState = _viewState.asStateFlow()
@@ -31,20 +33,10 @@ class CurrencyConverterViewModel @Inject constructor(
 
 
     fun validIfInputIsValid(input: String, oldValue: String): String {
-
-        if (input.isEmpty()) {
-            return ""
-        }
-        return try {
-            val bigDecimal = BigDecimal(input.replace(",", "."))
-            when {
-                bigDecimal < BigDecimal.ZERO -> oldValue
-                bigDecimal.scale() > 2 -> oldValue
-                else -> input
-            }
-        } catch (ex: NumberFormatException) {
-            oldValue
-        }
+        return validIfInputIsValidUseCase(
+            input = input,
+            oldValue = oldValue,
+        )
     }
 
     fun updateCurrencyValue(input: String) {
