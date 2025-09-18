@@ -15,5 +15,4 @@ class CurrencyConverterUseCase @Inject constructor(
             quotesRepository.getQuotesList().first { it.code == "$source$target" }.value
         ).multiply(BigDecimal(currentValue.replace(",", ".")))
     }
-
 }

@@ -5,6 +5,8 @@ import androidx.lifecycle.viewModelScope
 import androidx.room.util.copy
 import com.example.btgcurrencyconverter.domain.CurrencyConverterUseCase
 import com.example.btgcurrencyconverter.domain.CurrencyRepository
+import com.example.btgcurrencyconverter.domain.GetCurrencyTargetUseCase
+import com.example.btgcurrencyconverter.domain.InitializeCurrenciesUseCase
 import com.example.btgcurrencyconverter.domain.QuotesRepository
 import com.example.btgcurrencyconverter.domain.ValidIfInputIsValidUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -21,8 +23,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class CurrencyConverterViewModel @Inject constructor(
-    private val currencyRepository: CurrencyRepository,
-    private val quotesRepository: QuotesRepository,
+    private val initializeCurrenciesUseCase: InitializeCurrenciesUseCase,
+    private val getCurrencyTargetUseCase: GetCurrencyTargetUseCase,
     private val validIfInputIsValidUseCase: ValidIfInputIsValidUseCase,
     private val currencyConverterUseCase: CurrencyConverterUseCase,
 ) : ViewModel() {
@@ -32,7 +34,6 @@ class CurrencyConverterViewModel @Inject constructor(
     init {
         fetchCurrency()
     }
-
 
     fun validIfInputIsValid(input: String, oldValue: String): String {
         return validIfInputIsValidUseCase(
@@ -77,8 +78,8 @@ class CurrencyConverterViewModel @Inject constructor(
     fun setSelectedCurrency(currencyId: Long) {
         viewModelScope.launch {
             _viewState.update {
-                it. copy(
-                    target = currencyRepository.getCurrencyById(currencyId)?.code.orEmpty(),
+                it.copy(
+                    target = getCurrencyTargetUseCase(currencyId = currencyId),
                     result = "",
 
                     )
@@ -86,7 +87,7 @@ class CurrencyConverterViewModel @Inject constructor(
         }
     }
 
-    private fun fetchCurrency(){
+    private fun fetchCurrency() {
         viewModelScope.launch {
             _viewState.update {
                 it.copy(
@@ -97,8 +98,7 @@ class CurrencyConverterViewModel @Inject constructor(
             }
 
             try {
-                currencyRepository.fetchCurrencyList()
-                quotesRepository.fetchQuotesList()
+                initializeCurrenciesUseCase()
             } catch (ex: UnknownHostException) {
                 updateError(
                     isError = true,
