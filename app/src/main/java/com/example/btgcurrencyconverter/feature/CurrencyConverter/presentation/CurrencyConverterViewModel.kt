@@ -3,6 +3,7 @@ package com.example.btgcurrencyconverter.feature.CurrencyConverter.presentation
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.room.util.copy
+import com.example.btgcurrencyconverter.domain.CurrencyConverterUseCase
 import com.example.btgcurrencyconverter.domain.CurrencyRepository
 import com.example.btgcurrencyconverter.domain.QuotesRepository
 import com.example.btgcurrencyconverter.domain.ValidIfInputIsValidUseCase
@@ -23,6 +24,7 @@ class CurrencyConverterViewModel @Inject constructor(
     private val currencyRepository: CurrencyRepository,
     private val quotesRepository: QuotesRepository,
     private val validIfInputIsValidUseCase: ValidIfInputIsValidUseCase,
+    private val currencyConverterUseCase: CurrencyConverterUseCase,
 ) : ViewModel() {
     private val _viewState = MutableStateFlow(CurrencyConverterViewState())
     val viewState = _viewState.asStateFlow()
@@ -65,15 +67,17 @@ class CurrencyConverterViewModel @Inject constructor(
         target: String,
         currentValue: String,
     ): BigDecimal {
-        return BigDecimal(
-            quotesRepository.getQuotesList().first { it.code == "$source$target" }.value
-        ).multiply(BigDecimal(currentValue.replace(",", ".")))
+        return currencyConverterUseCase(
+            source = source,
+            target = target,
+            currentValue = currentValue,
+        )
     }
 
     fun setSelectedCurrency(currencyId: Long) {
         viewModelScope.launch {
             _viewState.update {
-                it.copy(
+                it. copy(
                     target = currencyRepository.getCurrencyById(currencyId)?.code.orEmpty(),
                     result = "",
 
