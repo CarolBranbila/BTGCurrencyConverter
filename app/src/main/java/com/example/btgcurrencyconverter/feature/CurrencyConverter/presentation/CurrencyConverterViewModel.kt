@@ -67,7 +67,7 @@ class CurrencyConverterViewModel @Inject constructor(
         source: String,
         target: String,
         currentValue: String,
-    ): BigDecimal {
+    ): BigDecimal? {
         return currencyConverterUseCase(
             source = source,
             target = target,

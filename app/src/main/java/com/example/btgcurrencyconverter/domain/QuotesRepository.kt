@@ -23,7 +23,7 @@ class QuotesRepository @Inject constructor (
     }
 }
 
-private fun QuotesListResponse.toEntity(): List<QuotesEntity>{
+fun QuotesListResponse.toEntity(): List<QuotesEntity>{
     return this.quotes.map{
         QuotesEntity(
             code = it.key,

@@ -10,9 +10,13 @@ class CurrencyConverterUseCase @Inject constructor(
         source: String,
         target: String,
         currentValue: String,
-        ) : BigDecimal{
-        return BigDecimal(
-            quotesRepository.getQuotesList().first { it.code == "$source$target" }.value
-        ).multiply(BigDecimal(currentValue.replace(",", ".")))
+    ): BigDecimal? {
+        val currentQuote =
+            quotesRepository.getQuotesList().firstOrNull { it.code == "$source$target" }?.value
+
+        return currentQuote?.let {
+            BigDecimal(it)
+                .multiply(BigDecimal(currentValue.replace(",", ".")))
+        }
     }
 }
