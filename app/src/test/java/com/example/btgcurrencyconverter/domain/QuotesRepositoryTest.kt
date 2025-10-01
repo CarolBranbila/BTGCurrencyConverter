@@ -12,13 +12,14 @@ import io.mockk.just
 import io.mockk.mockk
 import io.mockk.verify
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Test
 
 class QuotesRepositoryTest {
 
     @Test
-    fun getQuotesList_return_correct() = runBlocking {
+    fun getQuotesList_return_correct() = runTest {
         val quotesDao = mockk<QuotesDao>()
         val subject = QuotesRepository(
             api = mockk(),
@@ -40,7 +41,7 @@ class QuotesRepositoryTest {
     }
 
     @Test
-    fun fetchQuotesList_should_fetch_and_save_quotes_successfully() = runBlocking {
+    fun fetchQuotesList_should_fetch_and_save_quotes_successfully() = runTest {
         val quotesDao = mockk<QuotesDao>()
         val api = mockk<BTGApi>()
         val subject = QuotesRepository(

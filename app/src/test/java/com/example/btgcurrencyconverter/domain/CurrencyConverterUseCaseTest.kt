@@ -7,6 +7,7 @@ import com.example.btgcurrencyconverter.data.network.QuotesListResponse
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.test.runTest
 import org.junit.Test
 import java.math.BigDecimal
 import kotlin.test.assertEquals
@@ -15,7 +16,7 @@ class CurrencyConverterUseCaseTest {
 
     @Test
     fun CurrencyConverterUseCase_should_to_converter_currency() {
-        runBlocking {
+        runTest {
 
             val quotesRepository = mockk<QuotesRepository>()
             val subject = CurrencyConverterUseCase(
@@ -46,7 +47,7 @@ class CurrencyConverterUseCaseTest {
 
     @Test
     fun CurrencyConverterUseCase_should_return_null_when_quote_not_found() {
-        runBlocking {
+        runTest {
 
             val quotesRepository = mockk<QuotesRepository>()
             val subject = CurrencyConverterUseCase(
@@ -75,7 +76,7 @@ class CurrencyConverterUseCaseTest {
 
         @Test
         fun CurrencyConverterUseCase_should_return_null_when_parameters_not_found() {
-            runBlocking {
+            runTest {
 
                 val quotesRepository = mockk<QuotesRepository>()
                 val subject = CurrencyConverterUseCase(

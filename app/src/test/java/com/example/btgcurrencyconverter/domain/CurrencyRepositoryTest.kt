@@ -10,13 +10,14 @@ import io.mockk.coVerify
 import io.mockk.just
 import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import kotlin.test.Test
 
 class CurrencyRepositoryTest {
 
     @Test
-    fun getCurrencyById_return_correct() = runBlocking {
+    fun getCurrencyById_return_correct() = runTest {
         val currencyDao = mockk<CurrencyDao>()
         val subject = CurrencyRepository(
             api = mockk(),
@@ -37,7 +38,7 @@ class CurrencyRepositoryTest {
     }
 
     @Test
-    fun getCurrencyList_return_correct() = runBlocking {
+    fun getCurrencyList_return_correct() = runTest {
         val currencyDao = mockk<CurrencyDao>()
         val subject = CurrencyRepository(
             api = mockk(),
@@ -59,7 +60,7 @@ class CurrencyRepositoryTest {
     }
 
     @Test
-    fun fetCurrencyList_and_currency_empty_should_fetch_currencies() = runBlocking {
+    fun fetCurrencyList_and_currency_empty_should_fetch_currencies() = runTest {
         val currencyDao = mockk<CurrencyDao>()
         val api = mockk<BTGApi>()
         val subject = CurrencyRepository(
@@ -88,7 +89,7 @@ class CurrencyRepositoryTest {
     }
 
     @Test
-    fun fetCurrencyList_and_currency_not_empty_should__not_fetch_currencies() = runBlocking {
+    fun fetCurrencyList_and_currency_not_empty_should__not_fetch_currencies() = runTest {
         val currencyDao = mockk<CurrencyDao>()
         val api = mockk<BTGApi>()
         val subject = CurrencyRepository(
