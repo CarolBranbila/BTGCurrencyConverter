@@ -2,24 +2,32 @@ package com.example.btgcurrencyconverter.feature.CurrencyConverter.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.room.util.copy
 import com.example.btgcurrencyconverter.domain.CurrencyConverterUseCase
-import com.example.btgcurrencyconverter.domain.CurrencyRepository
 import com.example.btgcurrencyconverter.domain.GetCurrencyTargetUseCase
 import com.example.btgcurrencyconverter.domain.InitializeCurrenciesUseCase
-import com.example.btgcurrencyconverter.domain.QuotesRepository
 import com.example.btgcurrencyconverter.domain.ValidIfInputIsValidUseCase
+import dagger.Module
+import dagger.Provides
+import dagger.hilt.InstallIn
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.components.SingletonComponent
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
-import java.lang.Exception
 import java.math.BigDecimal
-import java.net.ConnectException
 import java.net.UnknownHostException
 import javax.inject.Inject
+import kotlin.coroutines.CoroutineContext
+
+@Module
+@InstallIn(SingletonComponent::class)
+object ViewModeModule {
+    @Provides
+    fun dispatcher(): CoroutineContext = Dispatchers.IO
+}
 
 @HiltViewModel
 class CurrencyConverterViewModel @Inject constructor(
@@ -27,8 +35,10 @@ class CurrencyConverterViewModel @Inject constructor(
     private val getCurrencyTargetUseCase: GetCurrencyTargetUseCase,
     private val validIfInputIsValidUseCase: ValidIfInputIsValidUseCase,
     private val currencyConverterUseCase: CurrencyConverterUseCase,
-) : ViewModel() {
+    private val coroutineContext: CoroutineContext,
+    ) : ViewModel() {
     private val _viewState = MutableStateFlow(CurrencyConverterViewState())
+
     val viewState = _viewState.asStateFlow()
 
     init {
@@ -43,7 +53,7 @@ class CurrencyConverterViewModel @Inject constructor(
     }
 
     fun updateCurrencyValue(input: String) {
-        viewModelScope.launch {
+        viewModelScope.launch(coroutineContext) {
             if (input.isNotEmpty()) {
                 _viewState.update {
                     val convertedValue = convert(
@@ -88,7 +98,7 @@ class CurrencyConverterViewModel @Inject constructor(
     }
 
     private fun fetchCurrency() {
-        viewModelScope.launch {
+        viewModelScope.launch(coroutineContext) {
             _viewState.update {
                 it.copy(
                     isLoading = true,
@@ -99,6 +109,7 @@ class CurrencyConverterViewModel @Inject constructor(
 
             try {
                 initializeCurrenciesUseCase()
+
             } catch (ex: UnknownHostException) {
                 updateError(
                     isError = true,
